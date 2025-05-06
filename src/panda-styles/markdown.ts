@@ -64,7 +64,6 @@ export const markdownStyle = {
     borderLeft: "0.5rem solid {colors.border}",
     padding: "4",
     margin: "{spacing.2} 0",
-    backgroundColor: "{colors.secondaryBackground}",
     color: "{colors.text/50}",
   },
   'a[class="data-footnote-backref"]': {
