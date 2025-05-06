@@ -60,6 +60,15 @@ export const markdownStyle = {
     listStylePosition: "inside",
     marginLeft: "5",
   },
+  blockquote: {
+    borderLeft: "0.5rem solid {colors.border}",
+    padding: "4",
+    margin: "{spacing.2} 0",
+    color: "{colors.text/50}",
+  },
+  'a[class="data-footnote-backref"]': {
+    fontFamily: "monospace",
+  },
   ".expressive-code": {
     margin: { base: "2", md: "5" },
   },
@@ -72,6 +81,9 @@ export const markdownStyle = {
     padding: "1",
     borderRadius: "0.5rem",
   },
+  "section.footnotes > ol > li > p": {
+    display: "inline",
+  },
   // Note (Aside)
   /**
    * :::note_(warn|info|alert|success)
@@ -79,10 +91,8 @@ export const markdownStyle = {
    * :::
    */
   ".note": {
-    padding: "1rem",
-    borderRadius: "0.5rem",
-    fontSize: "sm",
-    lineHeight: "1.5",
+    padding: "4",
+    borderRadius: "lg",
     margin: "{spacing.2} 0",
   },
   ".note.warn": {

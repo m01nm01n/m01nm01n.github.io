@@ -11,7 +11,7 @@ layout: "@/layouts/MarkdownLayout.astro"
 #### H4
 ##### H5
 ###### H6
-text
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 [link](https://example.com)
 **bold**
 *italic*
@@ -104,3 +104,27 @@ localhost:8080 ← `localhost:8080`と表示されるか
 1. capture
 2. the
 3. flag
+
+> **quote**
+> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+> ```python
+> print("hello")
+> ```
+
+# Footnote
+Here is a simple footnote[^1].
+  
+A footnote can also have multiple lines[^2].
+
+[^1]: My reference.
+[^2]: To add line breaks within a footnote, prefix new lines with 2 spaces.
+  This is a second line.
+
+# Emoji
+https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md
+
+Look, the moon :new_moon_with_face:
+
+Here’s a family :family_man_man_boy_boy:
+
+Слава Україні!  :ukraine:

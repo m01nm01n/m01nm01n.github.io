@@ -1,0 +1,17 @@
+---
+import { css, cx } from "styled-system/css";
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<span class={cx(css({
+    padding: "1",
+    borderRadius: "full",
+    backgroundColor: "gray.500",
+}), className)}>
+  <slot />
+</span>

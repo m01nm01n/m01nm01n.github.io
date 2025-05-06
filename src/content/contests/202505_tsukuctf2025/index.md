@@ -2,7 +2,7 @@
 title: TsukuCTF 2025
 startDate: 2025-05-03 12:00
 endDate: 2025-05-04 12:00
-result: 11 (Japanese Students)
+result: 11th (Japanese Students)
 tags:
     - writeup
 members:

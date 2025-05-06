@@ -1,13 +1,13 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import { defineConfig } from "astro/config";
 import { h } from "hastscript";
 import rehypeAutolinkHeadings, { type Options } from "rehype-autolink-headings";
 import rehypeKatex from "rehype-katex";
 import remarkBreaks from "remark-breaks";
 import remarkDirective from "remark-directive";
+import remarkGemoji from "remark-gemoji";
 import remarkMath from "remark-math";
-
-import { defineConfig } from "astro/config";
 
 import path from "node:path";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
@@ -79,6 +79,7 @@ export default defineConfig({
       remarkImageSizePlugin,
       remarkBreaks,
       remarkMath,
+      remarkGemoji,
     ],
   },
 });

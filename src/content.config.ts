@@ -14,6 +14,10 @@ const blog = defineCollection({
   }),
 });
 
+const contestTags = ["writeup"] as const;
+const contestTagsSchema = z.enum(contestTags);
+export type ContestTag = z.infer<typeof contestTagsSchema>;
+
 const contests = defineCollection({
   loader: glob({
     base: "./src/content/contests",
@@ -37,7 +41,14 @@ const contests = defineCollection({
       // 順位を目立たせるかどうか
       highlighted: z.boolean().optional(),
       // タグ
-      tags: z.enum(["writeup"]).array(),
+      tags: z.array(
+        contestTagsSchema.or(z.string().startsWith("+")).transform((t) => {
+          if (t.startsWith("+")) {
+            return t.slice(1);
+          }
+          return t;
+        }),
+      ),
       members: z.array(reference("member")),
       // 投稿日時 (JST)
       pubDate: z.coerce.date(),
@@ -68,7 +79,7 @@ const writeup = defineCollection({
     base: "./src/content/contests",
     pattern: "*/writeup/*.{md,mdx}",
   }),
-  schema: () =>
+  schema: (c) =>
     z.object({
       contest: reference("contests"),
       title: z.string(),
