@@ -60,6 +60,15 @@ export const markdownStyle = {
     listStylePosition: "inside",
     marginLeft: "5",
   },
+  blockquote: {
+    borderLeft: "0.5rem solid {colors.border}",
+    padding: "1rem",
+    margin: "1rem 0",
+    backgroundColor: "{colors.secondaryBackground}",
+    fontSize: "sm",
+    lineHeight: "1.5",
+    color: "{colors.text/50}",
+  },
   ".expressive-code": {
     margin: { base: "2", md: "5" },
   },
