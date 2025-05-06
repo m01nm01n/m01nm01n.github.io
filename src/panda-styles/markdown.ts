@@ -81,6 +81,9 @@ export const markdownStyle = {
     padding: "1",
     borderRadius: "0.5rem",
   },
+  "section.footnotes > ol > li > p": {
+    display: "inline",
+  },
   // Note (Aside)
   /**
    * :::note_(warn|info|alert|success)
