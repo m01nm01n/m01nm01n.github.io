@@ -67,6 +67,9 @@ export const markdownStyle = {
     backgroundColor: "{colors.secondaryBackground}",
     color: "{colors.text/50}",
   },
+  'a[class="data-footnote-backref"]': {
+    fontFamily: "monospace",
+  },
   ".expressive-code": {
     margin: { base: "2", md: "5" },
   },
