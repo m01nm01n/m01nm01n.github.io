@@ -1,12 +1,21 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import type { ContestTag } from "@/content.config";
+import { Icon } from "astro-icon/components";
+import { format } from "date-fns";
 import { css } from "styled-system/css";
+import { hstack } from "styled-system/patterns";
+import Badge from "./Badge.astro";
 import FormattedDate from "./FormattedDate.astro";
 import MemberBadge from "./MemberBadge.astro";
 
 export type ContestWithMembers = CollectionEntry<"contests"> & {
   members: CollectionEntry<"member">[];
 };
+
+const TagIcons: Record<string, string | undefined> = {
+  writeup: "mdi:file-document-edit-outline",
+} satisfies Record<ContestTag, string | undefined>;
 
 interface Props {
   contests: ContestWithMembers[];
@@ -51,7 +60,7 @@ const { contests } = Astro.props;
             borderColor: "gray.200",
           })}
         >
-          開催日
+          開催期間 (JST)
         </th>
         <th
           class={css({
@@ -96,7 +105,7 @@ const { contests } = Astro.props;
             })}
           >
             <td
-              class={css({
+              class={hstack({
                 py: "4",
                 px: "4",
                 borderBottom: "1px solid",
@@ -107,6 +116,7 @@ const { contests } = Astro.props;
                 _first: {
                   borderTopLeftRadius: "lg",
                 },
+                justifyContent: "space-between",
               })}
             >
               <a
@@ -121,6 +131,21 @@ const { contests } = Astro.props;
               >
                 {contest.data.title}
               </a>
+              {contest.data.tags.map((t) => (
+                <Badge>
+                  {TagIcons[t] && (
+                    <Icon
+                      name={TagIcons[t]}
+                      class={css({
+                        display: "inline",
+                        mr: "1",
+                      })}
+                    />
+                  )}
+
+                  {t}
+                </Badge>
+              ))}
             </td>
             <td
               class={css({
@@ -133,15 +158,8 @@ const { contests } = Astro.props;
                 color: "gray.600",
               })}
             >
-              <FormattedDate date={contest.data.startDate} />
-              {!contest.data.endDate
-                .toDateString()
-                .includes(contest.data.startDate.toDateString()) && (
-                <>
-                  {" "}
-                  - <FormattedDate date={contest.data.endDate} />
-                </>
-              )}
+              {format(contest.data.startDate, "MM/dd")} -{" "}
+              {format(contest.data.endDate, "MM/dd")}
             </td>
             <td
               class={css({
@@ -192,8 +210,11 @@ const { contests } = Astro.props;
               {contest.members.map((member, i) => (
                 <>
                   {i > 0 && ", "}
-                  
-                  <MemberBadge name={member.data.name} image={member.data.image} />
+
+                  <MemberBadge
+                    name={member.data.name}
+                    image={member.data.image}
+                  />
                 </>
               ))}
             </td>
