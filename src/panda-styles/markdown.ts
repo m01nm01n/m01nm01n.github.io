@@ -62,11 +62,9 @@ export const markdownStyle = {
   },
   blockquote: {
     borderLeft: "0.5rem solid {colors.border}",
-    padding: "1rem",
-    margin: "1rem 0",
+    padding: "4",
+    margin: "{spacing.2} 0",
     backgroundColor: "{colors.secondaryBackground}",
-    fontSize: "sm",
-    lineHeight: "1.5",
     color: "{colors.text/50}",
   },
   ".expressive-code": {
@@ -88,10 +86,8 @@ export const markdownStyle = {
    * :::
    */
   ".note": {
-    padding: "1rem",
-    borderRadius: "0.5rem",
-    fontSize: "sm",
-    lineHeight: "1.5",
+    padding: "4",
+    borderRadius: "lg",
     margin: "{spacing.2} 0",
   },
   ".note.warn": {
