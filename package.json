@@ -10,7 +10,9 @@
     "astro": "astro",
     "check": "biome check --write",
     "fmt": "biome format --write",
-    "lint": "biome lint --write"
+    "lint": "biome lint --write",
+    "new": "tsx scripts/new-writeup.ts",
+    "new:writeup": "tsx scripts/new-writeup.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -43,17 +45,25 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@inquirer/prompts": "^7.5.3",
     "@pandacss/dev": "^0.53.4",
+    "@types/fs-extra": "^11.0.4",
     "@types/hast": "^3.0.4",
+    "@types/inquirer": "^9.0.8",
     "@types/mdast": "^4.0.4",
     "@types/node": "^22.15.11",
+    "fs-extra": "^11.3.0",
+    "gray-matter": "^4.0.3",
+    "inquirer": "^12.6.3",
     "lefthook": "^1.11.10",
+    "tsx": "^4.19.4",
     "vfile": "^6.0.3"
   },
   "pnpm": {
     "executionEnv": {
       "nodeVersion": "22.15.0"
-    }
+    },
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "lefthook", "sharp"]
   },
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
