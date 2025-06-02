@@ -1,0 +1,133 @@
+---
+contest: 202505_greycat_the_flag_ctf
+title: Uwusignatures
+category: crypto
+# membersにある自分の名前
+author: chizuchizu
+---
+
+### 問題
+
+- $p$: 素数
+- $g$: 1~$p$の乱数
+- $x$: 秘密鍵
+- $y$: 公開鍵 ($g^x \bmod p$)
+- $k$: 署名に使う鍵
+- $m$: 平文
+- $h$: $m$のSHA-256でのハッシュ値
+
+署名$s$を次のアルゴリズムで得る。
+$$
+r = g^k \bmod p \\
+s = (h - x \cdot r) k^{-1} \bmod (p-1)
+$$
+
+検証
+$$
+g^h \equiv y^r \cdot r^s \bmod p 
+$$
+
+
+`"gib flag pls uwu"`という平文に対する署名を計算する問題でした。
+
+### 解法
+
+ChatGPTに解かせてしまったので、自分で振り返りながら解いたメモを書く。
+
+既知なこと
+- $p$
+- $g$
+- $y$
+- $k$
+- $r$: $g^k \bmod p$なので
+
+式変形をすると$s$、$h$、$r$から秘密鍵$x$がわかる。
+
+$$
+xr = h-sk \bmod (p-1) \\
+x = (h - sk)r^{-1} \bmod (p-1)
+$$
+
+
+したがって、適当な$m$に対してサインしてもうと$s$がわかる。
+既知のパラメタと$m$と$s$を使って$x$が求まる。
+
+そして、$x$を使って`"gib flag pls uwu"`の署名$s$を計算によって求めることができる。
+
+exploitは次のとおり。
+
+```python
+from Crypto.Util.number import *
+import json
+import hashlib
+from pwn import *
+
+def hash_m(m):
+    sha = hashlib.sha256()
+    sha.update(long_to_bytes(m))
+    return bytes_to_long(sha.digest())
+def sign(m):
+    assert m > 0
+    assert m < p
+    h = hash_m(m)
+    r = pow(g, k, p)
+    s = ((h - x * r) * pow(k, -1, p - 1)) % (p - 1) 
+    return (r, s)
+
+io = remote("challs.nusgreyhats.org", 33301)
+
+ret = io.recvline()
+log.info(ret)
+ret = io.recvline()
+log.info(ret)
+p, g, y = list(map(int, ret.split()))
+
+ret = io.recvline()
+log.info(ret)
+k = int(ret.split()[-1])
+
+m = 111111
+message = json.dumps({"m": m})
+
+ret = io.recvuntil(b"> ")
+log.info(ret)
+io.sendline(b"2")
+ret = io.recvuntil(b": ")
+log.info(ret)
+
+io.sendline(message.encode())
+
+ret = io.recvline()
+log.info(ret)
+s = int(ret.split()[-1])
+h = hash_m(m)
+r = pow(g, k, p)
+
+x = (h - s * k) * pow(r, -1, p - 1) % (p - 1)
+
+
+m = bytes_to_long(b"gib flag pls uwu")
+h = hash_m(m)
+r, s = sign(m)
+
+message = json.dumps(
+    {
+        "m": m,
+        "r": r,
+        "s": s,
+    }
+)
+
+ret = io.recvuntil(b"> ")
+log.info(ret)
+io.sendline(b"1")
+ret = io.recvuntil(b": ")
+log.info(ret)
+io.sendline(message.encode())
+ret = io.recv()
+log.info(ret)
+```
+
+ `grey{h_h_H_h0wd_y0u_Do_tH4T_OMO}`
+
+ちゃんと考察をすれば解けるんだなぁと思った。 
