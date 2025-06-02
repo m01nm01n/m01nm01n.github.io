@@ -7,3 +7,129 @@ author: chizuchizu
 ---
 
 ### 問題
+
+最初の`state`にはフラグのバイト列が入る。
+次の関数群を使ってフラグを入れ替えたり乱数列とXORしたりを繰り返すことができる。
+
+```python
+class Shaker:
+
+    def __init__(self, state):
+        self.state = state
+        self.x = random.randbytes(64)
+        self.p = [i for i in range(64)]
+        random.shuffle(self.p)
+        
+    def permute(self):
+        self.state = [self.state[_] for _ in self.p]
+
+    def xor(self):
+        self.state = [a^b for a,b in zip(self.state, self.x)]
+
+    def shake(self):
+        self.xor()
+        self.permute()
+
+    def reset(self):
+        random.shuffle(self.p)
+        self.shake()
+        
+    def open(self):
+        self.xor()
+        return self.state
+```
+
+### 解法
+
+本番はChatGPTに解いてもらって、自力では解けなかったのでChatGPTの解法を吟味して書く。
+
+choice 2を選ぶと`open`と`reset`が実行される。`Y_j`は`open`を実行する事に得られる。
+
+$$
+Y_0 = F \oplus X \\
+Y_1 = P_1(F) \oplus X \\
+Y_2 = P_2(F) \oplus X \\
+Y_j = P_j(F) \oplus X
+$$
+
+
+これを繰り返していくと、ある$X_0$に対して全ての$F_0$から$F_N$までXORをした結果が取得できる。
+しかし、何でXORをしたかどうかまではランダムなパーミュテーションによってわからない。
+
+$S_0$には$X_0 \oplus F_?$、$S_1$には$X_1 \oplus F_?$が含まれる。
+偶然?が同じになるような$S_0$と$S_1$のそれぞれのインデックスがあれば、それらのXORが$X_0 \oplus X_1$と等しくなる。
+こうして、全ての場合の偏差を見つかるので$X_0$に対して他の$X_1$から$X_N$が求まる。
+$X_0$はわからないが、256通りしかないので総当たりしてフラグの候補を出す。
+
+```python 
+from Crypto.Util.number import *
+import hashlib
+from pwn import *
+
+
+# io = remote("localhost", 9000)
+io = remote("challs.nusgreyhats.org", 33302)
+
+
+Y = []
+N = 1200
+with log.progress("Collecting...") as p:
+    for _ in range(N):
+        p.status("At %i" % _)
+        ret = io.sendlineafter(b"> ", b"2")
+        # log.info(ret)
+        # log.info(b"2")
+        ret = io.recvline()
+        # log.info(ret)
+        Y_ = bytes.fromhex(ret.split()[-1].decode())
+        Y.append(Y_)
+
+
+log.info("DONE")
+
+S = [[] for _ in range(64)]
+for y in Y:
+    for k, byte in enumerate(y):
+        S[k].append(byte)
+
+for i in range(64):
+    S[i] = list(set(S[i]))  
+    
+print(S)
+
+def offset(A, B):
+    for a in A:
+        for b in B:
+            c = a ^ b
+            if all((v ^ c) in B for v in A):
+                return c
+
+
+diff = [0]
+for k in range(1, 64):
+    tmp = offset(S[0], S[k])
+    diff.append(tmp)
+
+log.info(diff)
+
+for x0 in range(256):
+    x = bytes([x0 ^ d for d in diff])
+    F = bytes([Y[0][i] ^ x[i] for i in range(64)])
+    try:
+        flag = F.decode()
+        if flag[0] == "g":
+            log.info(flag)
+    except:
+        pass
+```
+
+`grey{kinda_long_flag_but_whatever_65k2n427c61ww064ac3vhzigae2qg}`
+
+
+一人で解ける自信がない。    
+ホワイトボードで数式を書いてたくさん考察していく力が必要そうだった。
+また、行き当たったときに**たくさん回数をこなすとどうなるか**を考えることも大事だと思った。
+実際に過去の他の問題でもなぜか$N$を大きくして実験すると巡回していることが判明するものもあった。（多分TsukuCTF 2025）
+
+暗号の知識ゲーではなく、純粋に考察で解ける問題だと振り返りのしがいがあって良いね。
+
