@@ -1,6 +1,10 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { WriteupTemplateData } from "./types";
+import type { MemberTemplateData, WriteupTemplateData } from "./types";
+import {
+  validateMemberFrontmatter,
+  validateWriteupFrontmatter,
+} from "./validation";
 
 /**
  * writeupのMarkdownテンプレートを生成
@@ -36,6 +40,8 @@ export async function createWriteupFile(
   // ファイルを作成
   await writeFile(data.filePath, template, "utf-8");
 
+  await validateWriteupFrontmatter(data.filePath);
+
   console.log(`✅ Writeupファイルを作成しました: ${data.filePath}`);
 }
 
@@ -51,4 +57,26 @@ export async function createImagesDirectory(writeupDir: string): Promise<void> {
   await writeFile(gitkeepPath, "", "utf-8");
 
   console.log(`✅ imagesディレクトリを作成しました: ${imagesDir}`);
+}
+
+export function generateMemberTemplate(id: string): string {
+  return `---
+name: ${id}
+---
+`;
+}
+
+export async function createMemberFile(
+  data: MemberTemplateData,
+): Promise<void> {
+  const template = generateMemberTemplate(data.id);
+
+  const dir = dirname(data.filePath);
+  await mkdir(dir, { recursive: true });
+
+  await writeFile(data.filePath, template, "utf-8");
+
+  await validateMemberFrontmatter(data.filePath);
+
+  console.log(`✅ Memberファイルを作成しました: ${data.filePath}`);
 }

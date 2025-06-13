@@ -8,9 +8,13 @@ import {
 } from "./writeup-generator/prompts";
 import {
   createImagesDirectory,
+  createMemberFile,
   createWriteupFile,
 } from "./writeup-generator/template";
-import type { WriteupTemplateData } from "./writeup-generator/types";
+import type {
+  MemberTemplateData,
+  WriteupTemplateData,
+} from "./writeup-generator/types";
 import {
   ensureWriteupDirectory,
   generateFileName,
@@ -58,6 +62,20 @@ async function main() {
     if (!shouldCreate) {
       console.log("❌ writeupの作成をキャンセルしました。");
       process.exit(0);
+    }
+
+    const isNewAuthor = !members.some((m) => m.id === answers.author);
+    const memberFilePath = join(
+      CONTENT_DIR,
+      "members",
+      `${answers.author}.mdx`,
+    );
+    if (isNewAuthor && !existsSync(memberFilePath)) {
+      const memberData: MemberTemplateData = {
+        id: answers.author,
+        filePath: memberFilePath,
+      };
+      await createMemberFile(memberData);
     }
 
     // 確認後にwriteupディレクトリを確保（必要に応じてコンテスト構造を変換）

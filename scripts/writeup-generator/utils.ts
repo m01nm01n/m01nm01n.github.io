@@ -1,4 +1,4 @@
-import { mkdir, readFile, rename, stat, glob } from "node:fs/promises";
+import { glob, mkdir, readFile, rename, stat } from "node:fs/promises";
 import { join } from "node:path";
 // @ts-ignore
 import matter from "gray-matter";
@@ -99,7 +99,7 @@ export function validateContestId(contestId: string): boolean {
 export function generateFileName(title: string, category: string): string {
   const cleanTitle = title
     .toLowerCase()
-    .replace(/[^a-z0-9\s-_]/g, "")
+    .replace(/[^a-z0-9\s_-]/g, "")
     .replace(/\s+/g, "_")
     .replace(/_+/g, "_")
     .replace(/^_|_$/g, "");
@@ -117,7 +117,9 @@ export async function convertContestToDirectory(
   let sourceFile: string | null = null;
   let fileExtension = "";
 
-  for await (const file of glob(`${contestId}.{md,mdx}`, { cwd: contestsDir })) {
+  for await (const file of glob(`${contestId}.{md,mdx}`, {
+    cwd: contestsDir,
+  })) {
     sourceFile = join(contestsDir, file);
     fileExtension = file.endsWith(".mdx") ? ".mdx" : ".md";
     break;

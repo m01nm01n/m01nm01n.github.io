@@ -1,18 +1,7 @@
 // Content configと同期したカテゴリ定義
 // src/content.config.tsの categories 配列と一致させる必要があります
 
-// カテゴリの定数配列（content.config.tsと同期）
-export const categories = [
-  "welcome",
-  "pwn",
-  "rev",
-  "web",
-  "crypto",
-  "osint",
-  "forensics",
-  "web3",
-  "misc",
-] as const;
+export { categories } from "../../src/content/schemas";
 
 export type Category = (typeof categories)[number];
 
@@ -30,5 +19,10 @@ export interface WriteupTemplateData {
   title: string;
   category: string;
   author: string;
+  filePath: string;
+}
+
+export interface MemberTemplateData {
+  id: string;
   filePath: string;
 }
