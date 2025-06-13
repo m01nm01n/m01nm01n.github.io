@@ -1,5 +1,11 @@
 import { defineCollection, reference, z } from "astro:content";
 import { glob } from "astro/loaders";
+import {
+  categories,
+  categoriesSchema,
+  memberFrontmatterSchema,
+  writeupFrontmatterSchema,
+} from "./content/schemas";
 const blog = defineCollection({
   // Load Markdown and MDX files in the `src/content/blog/` directory.
   loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
@@ -60,38 +66,16 @@ const contests = defineCollection({
     }),
 });
 
-//表記揺れ防止
-const categories = [
-  "welcome",
-  "pwn",
-  "rev",
-  "web",
-  "crypto",
-  "osint",
-  "forensics",
-  "web3",
-  "misc",
-] as const;
-const categoriesSchema = z.enum(categories);
+// 表記揺れ防止
 
 const writeup = defineCollection({
   loader: glob({
     base: "./src/content/contests",
     pattern: "*/writeup/*.{md,mdx}",
   }),
-  schema: (c) =>
-    z.object({
+  schema: () =>
+    writeupFrontmatterSchema.extend({
       contest: reference("contests"),
-      title: z.string(),
-      // + をつけると、任意のカテゴリ名(非推奨)
-      category: categoriesSchema
-        .or(z.string().startsWith("+"))
-        .transform((t) => {
-          if (t.startsWith("+")) {
-            return t.slice(1);
-          }
-          return t;
-        }),
       author: reference("member"),
     }),
 });
@@ -99,19 +83,8 @@ const writeup = defineCollection({
 const member = defineCollection({
   loader: glob({ base: "./src/content/members", pattern: "*.{md,mdx}" }),
   schema: ({ image }) =>
-    z.object({
-      // 名前 (表示用)
-      name: z.string(),
-      // 本名 (opt)
-      realName: z.string().optional(),
-      // 自己紹介 (opt)
-      description: z.string().optional(),
-      // スキル (opt)
-      skills: z.string().array().optional(),
-      image: image(),
-      x_twitter: z.string().url().optional(),
-      github: z.string().url().optional(),
-      website: z.string().url().optional(),
+    memberFrontmatterSchema.extend({
+      image: image().optional(),
     }),
 });
 

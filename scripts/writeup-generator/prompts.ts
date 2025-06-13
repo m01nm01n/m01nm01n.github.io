@@ -2,6 +2,21 @@ import { confirm, input, search, select } from "@inquirer/prompts";
 import { categories } from "./types";
 import type { WriteupPromptAnswers } from "./types";
 import type { ContestInfo, MemberInfo } from "./utils";
+import { validateContestId } from "./utils";
+
+function addCustomPrefix(category: string): string {
+  const trimmed = category.trim();
+  if ((categories as readonly string[]).includes(trimmed)) return trimmed;
+  return trimmed.startsWith("+") ? trimmed : `+${trimmed}`;
+}
+
+function contestIdValidator(input: string): true | string {
+  if (!input.trim()) return "コンテストIDは必須です";
+  if (!validateContestId(input)) {
+    return "コンテストIDは英数字、ハイフン、アンダースコアのみ使用できます";
+  }
+  return true;
+}
 
 /**
  * writeup作成のためのプロンプトを実行
@@ -17,13 +32,7 @@ export async function promptWriteupDetails(
   if (contests.length === 0) {
     contestId = await input({
       message: "コンテストID を入力してください:",
-      validate: (input) => {
-        if (!input.trim()) return "コンテストIDは必須です";
-        if (!/^[a-zA-Z0-9_-]+$/.test(input)) {
-          return "コンテストIDは英数字、ハイフン、アンダースコアのみ使用できます";
-        }
-        return true;
-      },
+      validate: contestIdValidator,
     });
   } else if (contests.length <= 10) {
     // コンテストが少ない場合は従来の選択方式
@@ -48,13 +57,7 @@ export async function promptWriteupDetails(
     if (selectedContest === "__new__") {
       contestId = await input({
         message: "新しいコンテストID を入力してください:",
-        validate: (input) => {
-          if (!input.trim()) return "コンテストIDは必須です";
-          if (!/^[a-zA-Z0-9_-]+$/.test(input)) {
-            return "コンテストIDは英数字、ハイフン、アンダースコアのみ使用できます";
-          }
-          return true;
-        },
+        validate: contestIdValidator,
       });
     } else {
       contestId = selectedContest;
@@ -104,13 +107,7 @@ export async function promptWriteupDetails(
     if (searchResult === "__new__") {
       contestId = await input({
         message: "新しいコンテストID を入力してください:",
-        validate: (input) => {
-          if (!input.trim()) return "コンテストIDは必須です";
-          if (!/^[a-zA-Z0-9_-]+$/.test(input)) {
-            return "コンテストIDは英数字、ハイフン、アンダースコアのみ使用できます";
-          }
-          return true;
-        },
+        validate: contestIdValidator,
       });
     } else {
       contestId = searchResult;
@@ -145,13 +142,15 @@ export async function promptWriteupDetails(
   });
 
   if (selectedCategory === "__custom__") {
-    category = await input({
-      message: "カスタムカテゴリを入力してください:",
-      validate: (input) => {
-        if (!input.trim()) return "カテゴリは必須です";
-        return true;
-      },
-    });
+    category = addCustomPrefix(
+      await input({
+        message: "カスタムカテゴリを入力してください:",
+        validate: (input) => {
+          if (!input.trim()) return "カテゴリは必須です";
+          return true;
+        },
+      }),
+    );
   } else {
     category = selectedCategory;
   }
