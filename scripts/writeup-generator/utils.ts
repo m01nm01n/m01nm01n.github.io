@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, rename, stat } from "node:fs/promises";
+import { mkdir, readFile, rename, stat, glob } from "node:fs/promises";
 import { join } from "node:path";
 // @ts-ignore
 import matter from "gray-matter";
@@ -22,42 +22,34 @@ export interface MemberInfo {
 export async function getExistingContests(): Promise<ContestInfo[]> {
   try {
     const contestsDir = join(CONTENT_DIR, "contests");
-    const entries = await readdir(contestsDir);
     const contests: ContestInfo[] = [];
 
-    for (const entry of entries) {
-      const fullPath = join(contestsDir, entry);
-      const isDirectory = (await stat(fullPath)).isDirectory();
+    for await (const path of glob("*/index.{md,mdx}", { cwd: contestsDir })) {
+      const fullPath = join(contestsDir, path);
+      const content = await readFile(fullPath, "utf-8");
+      const { data } = matter(content);
+      const id = path.split("/")[0];
+      contests.push({
+        id,
+        title: data.title || id,
+        date: data.startDate
+          ? new Date(data.startDate).toLocaleDateString()
+          : "不明",
+      });
+    }
 
-      if (isDirectory) {
-        // ディレクトリの場合、index.mdを探す
-        const indexPath = join(fullPath, "index.md");
-        try {
-          const content = await readFile(indexPath, "utf-8");
-          const { data } = matter(content);
-          contests.push({
-            id: entry,
-            title: data.title || entry,
-            date: data.startDate
-              ? new Date(data.startDate).toLocaleDateString()
-              : "不明",
-          });
-        } catch {
-          // index.mdが見つからない場合はスキップ
-        }
-      } else if (entry.endsWith(".md") || entry.endsWith(".mdx")) {
-        // ファイルの場合
-        const content = await readFile(fullPath, "utf-8");
-        const { data } = matter(content);
-        const id = entry.replace(/\.(md|mdx)$/, "");
-        contests.push({
-          id,
-          title: data.title || id,
-          date: data.startDate
-            ? new Date(data.startDate).toLocaleDateString()
-            : "不明",
-        });
-      }
+    for await (const file of glob("*.{md,mdx}", { cwd: contestsDir })) {
+      const fullPath = join(contestsDir, file);
+      const content = await readFile(fullPath, "utf-8");
+      const { data } = matter(content);
+      const id = file.replace(/\.mdx?$/, "");
+      contests.push({
+        id,
+        title: data.title || id,
+        date: data.startDate
+          ? new Date(data.startDate).toLocaleDateString()
+          : "不明",
+      });
     }
 
     return contests.sort((a, b) => a.title.localeCompare(b.title));
@@ -73,21 +65,18 @@ export async function getExistingContests(): Promise<ContestInfo[]> {
 export async function getExistingMembers(): Promise<MemberInfo[]> {
   try {
     const membersDir = join(CONTENT_DIR, "members");
-    const files = await readdir(membersDir);
     const members: MemberInfo[] = [];
 
-    for (const file of files) {
-      if (file.endsWith(".md") || file.endsWith(".mdx")) {
-        const filePath = join(membersDir, file);
-        const content = await readFile(filePath, "utf-8");
-        const { data } = matter(content);
-        const id = file.replace(/\.(md|mdx)$/, "");
+    for await (const file of glob("*.{md,mdx}", { cwd: membersDir })) {
+      const filePath = join(membersDir, file);
+      const content = await readFile(filePath, "utf-8");
+      const { data } = matter(content);
+      const id = file.replace(/\.(md|mdx)$/, "");
 
-        members.push({
-          id,
-          name: data.name || id,
-        });
-      }
+      members.push({
+        id,
+        name: data.name || id,
+      });
     }
 
     return members.sort((a, b) => a.name.localeCompare(b.name));
@@ -125,29 +114,19 @@ export async function convertContestToDirectory(
   contestId: string,
 ): Promise<void> {
   const contestsDir = join(CONTENT_DIR, "contests");
-  const contestFile = join(contestsDir, `${contestId}.md`);
-  const contestMdxFile = join(contestsDir, `${contestId}.mdx`);
-
   let sourceFile: string | null = null;
   let fileExtension = "";
 
-  // .md または .mdx ファイルが存在するかチェック
-  try {
-    await stat(contestFile);
-    sourceFile = contestFile;
-    fileExtension = ".md";
-  } catch {
-    try {
-      await stat(contestMdxFile);
-      sourceFile = contestMdxFile;
-      fileExtension = ".mdx";
-    } catch {
-      // ファイルが存在しない場合は何もしない
-      return;
-    }
+  for await (const file of glob(`${contestId}.{md,mdx}`, { cwd: contestsDir })) {
+    sourceFile = join(contestsDir, file);
+    fileExtension = file.endsWith(".mdx") ? ".mdx" : ".md";
+    break;
   }
 
-  if (!sourceFile) return;
+  if (!sourceFile) {
+    // ファイルが存在しない場合は何もしない
+    return;
+  }
 
   console.log(
     `📁 コンテスト "${contestId}" をディレクトリ構造に変換しています...`,
