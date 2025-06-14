@@ -35,7 +35,7 @@ m01nm01n is a CTF team of National Institute of Technology, Kisarazu College.
 ### document
 ファイルを見つけexifを見た.個人名は隠す.
 
-{%preview https://cnrj.cnic.navy.mil/Installations/CFA-Yokosuka/About/Installation-Guide/Airport-Shuttles/ %}
+ https://cnrj.cnic.navy.mil/Installations/CFA-Yokosuka/About/Installation-Guide/Airport-Shuttles/ 
 
 ```text=
 [~/dl] >>>exiftool 2023\ 08\ 29\ CFAY\ Airport\ Bus\ Schedule.pdf 
@@ -68,7 +68,7 @@ Page Count                      : 1
 
 ### finding_my_way
 以下でway番号を調べた.
-{%preview https://overpass-turbo.eu/ %}
+ https://overpass-turbo.eu/ 
 
 ![Screenshot_20250609_100058](https://hackmd.io/_uploads/HJSUzhm7ex.png)
 
@@ -91,7 +91,7 @@ Flag形式: Diver25{RJTT}
 
 立川付近で飛び立ってる。
 
-{%preview https://ja.wikipedia.org/wiki/%E7%AB%8B%E5%B7%9D%E9%A3%9B%E8%A1%8C%E5%A0%B4 %}
+ https://ja.wikipedia.org/wiki/%E7%AB%8B%E5%B7%9D%E9%A3%9B%E8%A1%8C%E5%A0%B4 
 
 
 `Diver25{RJTC}`
@@ -124,7 +124,7 @@ HPEらしいので正式名称で入れる。
 
 ### night_accident (1st solve)
 
-{%preview https://www.youtube.com/watch?v=jHgqCpJNL28 %}
+ https://www.youtube.com/watch?v=jHgqCpJNL28 
 
 2台の`SBS Transit`のバスが見える。52番と58番だった。バスはシンガポールにあるらしい。
 52番と58番の路線図のオーバーラップを調べれば良さそう。
@@ -306,7 +306,7 @@ Flag形式 : Diver25{YYYY/MM} (e.g. Diver25{2025/06})
 
 入力するとモンゴルのウランバートル付近の場所がヒットした。
 
-{%preview https://what3words.com/comedians.masking.bonkers %}
+ https://what3words.com/comedians.masking.bonkers 
 
 屋根を見ないといけないらしいので、Google Earthで遡った。（写真はGoogle Erathから）
 
@@ -570,7 +570,7 @@ YouTubeのタイトルになっていた `VIVIENDAS SOCIALES DE SAN JUAN MALABO`
 
 twitterのbioにgithub pagesのポートフォリオが載っていた.
 
-{%preview https://x.com/kodai_sn %}
+ https://x.com/kodai_sn 
 
 https://kodai-sn.github.io/
 
@@ -582,7 +582,7 @@ https://www.instagram.com/mizuki1206edelweiss/
 
 昔の投稿を眺めていたら、スマートフォンに関する投稿が見つかった。
 
-{%preview https://www.instagram.com/p/DHAMO0zPYjt/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA== %}
+ https://www.instagram.com/p/DHAMO0zPYjt/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA== 
 
 ![image](https://hackmd.io/_uploads/Sk9Qo0fmel.png)
 
@@ -742,7 +742,7 @@ russia angara 2024 oct 25 filetype:pdf
 
 外務省の多国間制裁チームのレポートがヒットした。
 
-{%preview https://www.mofa.go.jp/mofaj/files/100853978.pdf %}
+ https://www.mofa.go.jp/mofaj/files/100853978.pdf 
 
 あった！
 `Russian-flagged ANGARA ata Rajin Port, DPRK (Oct. 25, 2024)`
@@ -760,7 +760,7 @@ Rajin Portにフォーカスして衛星画像通りに配置すればOK
 
 ### bridge
 
-{%preview https://www.youtube.com/watch?v=fRMi8TXQRuo %}
+ https://www.youtube.com/watch?v=fRMi8TXQRuo 
 
 動画が撮影された場所は豊肥本線の上で竜田口の手前だった。
 
@@ -773,7 +773,7 @@ Rajin Portにフォーカスして衛星画像通りに配置すればOK
 気合で色々調べていたら、次のクエリで流用された橋の名前が見つかった。
 `熊本 "第二白川" 橋りょう 洪水 復旧 filetype:pdf`
 
-{%preview https://www.nakanihon.co.jp/gijyutsu/Shimada/BridgeData/f43KM.pdf %}
+ https://www.nakanihon.co.jp/gijyutsu/Shimada/BridgeData/f43KM.pdf 
 
 `Diver25{澱川橋梁}`
 
@@ -797,7 +797,7 @@ Rajin Portにフォーカスして衛星画像通りに配置すればOK
 
 ### bid
 
-{%preview https://www.omantender.com/tender/drilling-well-bore-supply-installation-pump-and-pipeline-al-bashayer-veterinary-hospital-wilayat-ad-68865d1.php %}
+ https://www.omantender.com/tender/drilling-well-bore-supply-installation-pump-and-pipeline-al-bashayer-veterinary-hospital-wilayat-ad-68865d1.php 
 次は、入札の結果を探す。gov.omでググって政府の公式ページに行く。
 https://gov.om/en/entities に General Secretariat of the Tender Board(入札委員会事務局)とあるので、それでググり、https://www.gstb.gov.om/en/Pages/GeneralSecretariat.aspx
 に行く。ヘッダーの`E-Service > Tendering system`でやっとそれっぽいシステムのページに行ける。
@@ -809,7 +809,7 @@ Tender No.に`1190/2023/MAFWR/DGAWRDK-94- Recall - 1`を入れて探すと、Awa
 ターゲットの公募はを見つけた.3位はGolden Sands社なのでABOUT USページからCEO.
 ![Screenshot_20250609_101328](https://hackmd.io/_uploads/SJ7BHh77eg.png)
 
-{%preview https://goldensandsoman.com/about-us/ %}
+ https://goldensandsoman.com/about-us/ 
 
 ### expense
 
@@ -842,7 +842,7 @@ https://fccid.io/TE7AX20V2/Internal-Photos/10-Internal-Photos-5053132
 
 RTL8367SのデータシートをみてUARTのピンを調べますか。
 
-{%preview https://www.lcsc.com/datasheet/lcsc_datasheet_2103121437_Realtek-Semicon-RTL8367S-CG_C2760849.pdf %}
+ https://www.lcsc.com/datasheet/lcsc_datasheet_2103121437_Realtek-Semicon-RTL8367S-CG_C2760849.pdf 
 
 ありました。
 ![image](https://hackmd.io/_uploads/SyuwDqfQlg.png)
@@ -867,13 +867,13 @@ ChatGPTに聞くと技適のページに実験レポートあるんじゃない�
 
 「SH-01J　FCC」でヒット。
 
-{%preview http://blogofmobile.com/article/68417 %}
+ http://blogofmobile.com/article/68417 
 
 `APYHRO00240`らしい。
 
 FCCのページもあった。
 
-{%preview https://fccid.io/APYHRO00240 %}
+ https://fccid.io/APYHRO00240 
 
 `Pt15B_APYHRO00240_TestReport_11380556H-B.pdf`を読んでみる。
 "serial"でPDFを検索したら番号、ありました。
@@ -890,11 +890,11 @@ wikimapiaで場所を調べたらПД-72と出てきました。
 ![image](https://hackmd.io/_uploads/By-Le9GXll.png)
 
 
-{%preview https://wikimapia.org/#lang=en&lat=69.215298&lon=33.381143&z=15&m=w&search=69.216246N%2C%2033.378242E %}
+ https://wikimapia.org/#lang=en&lat=69.215298&lon=33.381143&z=15&m=w&search=69.216246N%2C%2033.378242E 
 
 また、ПД-72で調べたらプロジェクト番号も同時に出てきました。
 
-{%preview http://militaryrussia.ru/blog/topic-822.html %}
+ http://militaryrussia.ru/blog/topic-822.html 
 
 Diver25{13560_ПД-72}
 
