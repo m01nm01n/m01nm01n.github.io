@@ -9,7 +9,7 @@ members:
     - chizuchizu
     - naotiki
     - nxvzbgbfben
-    - nimono
+    - tsune
 pubDate: 2025-06-14
 ctfTimeUrl: https://ctftime.org/event/2751/
 ---
