@@ -952,7 +952,7 @@ https://chatgpt.com/share/68444de9-3878-8010-b38c-b27b035b31cd　
 - "No need to use paid information." means money resolve everything.
 
 ## naotiki
-OSINTで超Guess問を解かされたことがあり、それからOSINTが超苦手になっていたがDIVER OSINT CTFはそんな質の悪い問題はなく、楽しかった。（し、もちろん難しかった！！）
+OSINTで超Guess問を解かされたことがあり、それからOSINTが超苦手になっていたがDIVER OSINT CTFはそんなことはなく、楽しめた！（あと、もちろん難しかった！）
 次も参加したい
 
 ## kokastar
